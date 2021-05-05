@@ -25,3 +25,8 @@ app.use(express.static("website"));
 const port = 5500;
 
 const server = app.listen(port, () => {console.log(`server running on localhost ${port}`);});
+
+//GET route that returns the projectData object
+app.get("/", function(req, res) {
+  res.send(projectData);
+});
