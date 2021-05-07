@@ -11,8 +11,12 @@ document.getElementById("generate").addEventListener("click", generateWeather);
 
 function generateWeather(){
   const zipCode = document.getElementById("zip").value;
-  getWeather(baseURL, zipCode, apiKey);
-}
+  const userRes = document.getElementById("feelings").value;
+  getWeather(baseURL, zipCode, apiKey)
+  .then(function(data) {
+    postData("/addWeather", {temperature: data.main.temp, date: d, userResponse: userRes});
+  });
+};
 
 const getWeather = async (bURL, zip, key) => {
   const res = await fetch(bURL+zip+key);
@@ -22,5 +26,24 @@ const getWeather = async (bURL, zip, key) => {
     return data;
   } catch (error) {
     console.log("error", console.error);
+  }
+}
+
+const postData = async (url = "", data = {}) => {
+  const response = await fetch(url, {
+    method: "POST", 
+    credentials: "same-origin", 
+    headers: {
+      "Content-Type": "application/json",
+    }, 
+    body: JSON.stringify(data),
+  });
+
+  try {
+    const newData = await response.json();
+    console.log(newData);
+    return newData;
+  } catch (error) {
+    console.log("error", error);
   }
 }

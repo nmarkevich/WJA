@@ -32,14 +32,16 @@ app.get("/", function(req, res) {
 });
 
 //POST route that adds incoming data to projectData
-app.post("/", addData);
+app.post("/addWeather", addData);
 
 function addData (req, res){
   let newData = req.body;
+  console.log(newData);
   let newEntry = {
     temperature: newData.temperature,
     date: newData.date,
     userResponse: newData.userResponse
   }
   projectData.push(newEntry);
+  res.send(projectData);
 }
