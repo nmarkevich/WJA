@@ -7,19 +7,24 @@ let zipCode;
 let d = new Date();
 let newDate = d.getMonth()+"."+ d.getDate()+"."+ d.getFullYear();
 
+//Event listener for 'Generate' button
 document.getElementById("generate").addEventListener("click", generateWeather);
 
+//Callback function for event listener
 function generateWeather(){
   const zipCode = document.getElementById("zip").value;
   const userRes = document.getElementById("feelings").value;
   getWeather(baseURL, zipCode, apiKey)
   .then(function(data) {
     postData("/addWeather", {temperature: data.main.temp, date: d, userResponse: userRes});
-  });
+  })
+  .then(updateUI());
 };
 
+//GET request to the OpenWeatherMap api
 const getWeather = async (bURL, zip, key) => {
   const res = await fetch(bURL+zip+key);
+
   try{
     const data = await res.json();
     console.log(data);
@@ -29,6 +34,7 @@ const getWeather = async (bURL, zip, key) => {
   }
 }
 
+//POST requests to add the data (from api and from a user) to the app
 const postData = async (url = "", data = {}) => {
   const response = await fetch(url, {
     method: "POST", 
@@ -43,6 +49,21 @@ const postData = async (url = "", data = {}) => {
     const newData = await response.json();
     console.log(newData);
     return newData;
+  } catch (error) {
+    console.log("error", error);
+  }
+}
+
+//Showing the info to a user
+const updateUI = async () => {
+  const request = await fetch("/all");
+
+  try {
+    const allData = await request.json();
+    console.log(allData);
+    document.getElementById("date").innerHTML = allData[0].currentDate;
+    document.getElementById("temp").innerHTML = allData[0].temperature;
+    document.getElementById("content").innerHTML = allData[0].userResponse;
   } catch (error) {
     console.log("error", error);
   }
