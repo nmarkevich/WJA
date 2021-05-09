@@ -27,8 +27,9 @@ const port = 5500;
 const server = app.listen(port, () => {console.log(`server running on localhost ${port}`);});
 
 //GET route that returns the projectData object
-app.get("/all", function(req, res) {
-  res.send(projectData);
+app.get("/recentData", function(req, res) {
+  const n = projectData.length - 1;
+  res.send(projectData[n]);
 });
 
 //POST route that adds incoming data to projectData

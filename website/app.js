@@ -15,10 +15,10 @@ function generateWeather(){
   const zipCode = document.getElementById("zip").value;
   const userRes = document.getElementById("feelings").value;
   getWeather(baseURL, zipCode, apiKey)
-  .then(function(data) {
-    postData("/addWeather", {temperature: data.main.temp, date: d, userResponse: userRes});
-  })
-  .then(updateUI());
+    .then(function(data) {
+      return postData("/addWeather", {temperature: data.main.temp, date: d, userResponse: userRes});
+    })
+    .then(updateUI);
 };
 
 //GET request to the OpenWeatherMap api
@@ -56,14 +56,14 @@ const postData = async (url = "", data = {}) => {
 
 //Showing the info to a user
 const updateUI = async () => {
-  const request = await fetch("/all");
+  const request = await fetch("/recentData");
 
   try {
     const allData = await request.json();
     console.log(allData);
-    document.getElementById("date").innerHTML = allData[0].currentDate;
-    document.getElementById("temp").innerHTML = allData[0].temperature;
-    document.getElementById("content").innerHTML = allData[0].userResponse;
+    document.getElementById("date").innerHTML = allData.currentDate;
+    document.getElementById("temp").innerHTML = allData.temperature;
+    document.getElementById("content").innerHTML = allData.userResponse;
   } catch (error) {
     console.log("error", error);
   }
