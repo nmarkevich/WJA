@@ -8,7 +8,7 @@ body{
     grid-auto-rows: minmax(150px, auto);
     /* grid-template-columns:  */
     height:100%;
-    background: #f23557;
+    background: gray;
     color: #f0d43a;
     justify-content: center;
     grid-gap: 1em;
@@ -108,4 +108,9 @@ button:focus {
     color: #f0d43a; 
     font-family: 'Oswald', sans-serif;
 
-} 
+}
+
+.error {
+    color: red;
+    font-size: 18px;
+}

@@ -14,11 +14,16 @@ document.getElementById("generate").addEventListener("click", generateWeather);
 function generateWeather(){
   const zipCode = document.getElementById("zip").value;
   const userRes = document.getElementById("feelings").value;
-  getWeather(baseURL, zipCode, apiKey)
-    .then(function(data) {
-      return postData("/addWeather", {temperature: data.main.temp, date: d, userResponse: userRes});
-    })
-    .then(updateUI);
+  if (zipCode == '') {
+    document.getElementById("zipError").innerHTML = "Zip code field is required";
+  } else {
+    document.getElementById("zipError").innerHTML = "";
+    getWeather(baseURL, zipCode, apiKey)
+      .then(function(data) {
+        return postData("/addWeather", {temperature: data.main.temp, date: d, userResponse: userRes});
+      })
+      .then(updateUI);
+  }
 };
 
 //GET request to the OpenWeatherMap api
